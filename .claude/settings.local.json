@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.manim.community)",
+      "Bash(mkdir:*)",
+      "WebSearch",
+      "Bash(python3:*)",
+      "Bash(manim:*)",
+      "Bash(wait)",
+      "Bash(timeout 120 manim:*)",
+      "Bash(pkill:*)",
+      "Bash(decompyle3:*)",
+      "Bash(cd:*)",
+      "Bash(python main.py:*)",
+      "SlashCommand(/animate:*)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "WebFetch(domain:www.geeksforgeeks.org)",
+      "WebFetch(domain:www.programiz.com)",
+      "Bash(curl:*)",
+      "Skill(math-research)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,93 @@
+manim-agent/  (Manim Agent Plugin)
+│
+├── README.md                                 # Main plugin documentation
+├── PLUGIN_OVERVIEW.md                        # Visual guide with diagrams
+├── claude-code-plugins-guide.md              # Plugin development reference
+├── STRUCTURE.txt                             # This file - directory tree
+│
+├── skills/                                   # Skills directory
+│   ├── README.md                             # Skills overview & integration
+│   │
+│   ├── manim-coding/                         # Manim syntax & coding skill
+│   │   ├── SKILL.md                          # Main reference (3 sections by frequency)
+│   │   ├── README.md                         # Usage guide
+│   │   ├── quick-reference.md                # Cheat sheet
+│   │   ├── syntax-by-category.md             # Complete syntax organized
+│   │   └── examples.py                       # 15+ runnable code examples
+│   │
+│   └── math-research/                        # Math research & planning skill
+│       ├── SKILL.md                          # Research methodology & template
+│       ├── README.md                         # Usage guide
+│       ├── report-template.md                # Blank report template
+│       ├── example-pythagorean-theorem.md    # Complete example report
+│       └── research-process.md               # Quick reference guide
+│
+└── agents/                                   # Agents directory
+    ├── manim-animator.md                     # Agent definition
+    ├── README.md                             # Complete agent guide
+    └── workflow-quick-reference.md           # Quick workflow reference
+
+───────────────────────────────────────────────────────────────────
+TOTAL: 16 files across 4 directories
+───────────────────────────────────────────────────────────────────
+
+KEY COMPONENTS:
+
+1. MANIM ANIMATOR AGENT (agents/)
+   • Intelligent workflow orchestrator
+   • 4 workflows: Generate, Refine, Compose, Interpret
+   • Uses both skills strategically
+
+2. MATH RESEARCH SKILL (skills/math-research/)
+   • Researches from Wikipedia, Brilliant, ProofWiki
+   • Creates comprehensive animation plans
+   • Generates detailed reports
+
+3. MANIM CODING SKILL (skills/manim-coding/)
+   • Complete Manim syntax reference
+   • Organized: Essential → Intermediate → Advanced
+   • 15+ code examples
+
+───────────────────────────────────────────────────────────────────
+
+FILE PURPOSES:
+
+📖 Documentation (Guides & References):
+   • README.md files - Complete usage guides
+   • SKILL.md files - Skill definitions & references
+   • PLUGIN_OVERVIEW.md - Visual diagrams
+   • claude-code-plugins-guide.md - Development reference
+
+📋 Templates & Examples:
+   • report-template.md - Blank research report
+   • example-pythagorean-theorem.md - Complete example
+   • examples.py - Runnable Manim code
+
+⚡ Quick References:
+   • quick-reference.md - Manim cheat sheet
+   • workflow-quick-reference.md - Agent workflows
+   • research-process.md - Research checklist
+   • syntax-by-category.md - Organized syntax
+
+🤖 Agent Configuration:
+   • manim-animator.md - Agent system prompt
+
+───────────────────────────────────────────────────────────────────
+
+WORKFLOW:
+
+User Request → Manim Animator Agent
+                     ↓
+        Determines appropriate workflow
+                     ↓
+    ┌────────────────┴───────────────┐
+    ↓                                ↓
+Math Research Skill          Manim Coding Skill
+(Research & Plan)            (Implement Code)
+    ↓                                ↓
+Research Report              Python Code
+    └────────────────┬───────────────┘
+                     ↓
+          Complete Animation Solution
+
+───────────────────────────────────────────────────────────────────

@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Manim outputs
+media/
+*.mp4
+*.mov
+*.gif
+*.png
+!manim-projects/**/README.md
+
+# Project-specific
+manim-projects/*/media/
+manim-projects/*/session.json
+concat_list.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Keep project structure but ignore media
+manim-projects/*/media/videos/**/*
+!manim-projects/*/media/videos/.gitkeep
