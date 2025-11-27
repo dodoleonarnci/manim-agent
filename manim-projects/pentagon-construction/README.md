@@ -1,14 +1,37 @@
 # Regular Pentagon Construction Animation
 
+⭐ **Featured showcase project** - This is the main example demonstrating the capabilities of the Manim Animation Agent.
+
 This project implements a step-by-step compass and straightedge construction of a regular pentagon using Manim.
+
+## 🎬 Watch the Animation
+
+**Full Combined Video (All 7 Scenes):**
+- Location: `media/videos/animation/1080p60/CombinedScenes.mp4`
+- Quality: 1080p60 (Full HD at 60 fps)
+- Size: 4.2 MB
+- Duration: ~2 minutes
+
+**Preview Images:**
+- `pentagon-preview.png` - Frame from midpoint construction
+- `pentagon-showcase.png` - Frame from completed pentagon
 
 ## Project Structure
 
 ```
 pentagon-construction/
-├── params.py          # All visual and timing parameters (externalized)
-├── animation.py       # Main animation code with all scenes
-└── README.md         # This file
+├── animation.py                  # Main animation code with all 7 scenes
+├── params.py                     # All visual and timing parameters (externalized)
+├── README.md                     # This file
+├── pentagon-preview.png          # Preview frame 1
+├── pentagon-showcase.png         # Preview frame 2
+└── media/
+    └── videos/
+        └── animation/
+            ├── 480p15/           # Low quality renders (individual scenes)
+            ├── 720p30/           # Medium quality renders
+            └── 1080p60/          # High quality renders
+                └── CombinedScenes.mp4  # ⭐ Full animation
 ```
 
 ## Key Features
@@ -44,13 +67,30 @@ manim -ql animation.py Verification
 
 ## Rendering Full Animation
 
-To render all scenes in sequence (not yet implemented as combined scene):
+### Option 1: Using the Combined Scene (Recommended)
+
+The animation includes a `PentagonConstruction` scene that combines all 7 scenes into one continuous animation:
 
 ```bash
-# Render individual scenes and combine later
+# Render all scenes in one combined video
+manim -qh animation.py PentagonConstruction
+
+# The output will be automatically combined into CombinedScenes.mp4
+```
+
+**Note:** The combined video is already available at `media/videos/animation/1080p60/CombinedScenes.mp4`
+
+### Option 2: Render Individual Scenes
+
+To render all individual scenes separately:
+
+```bash
+# Render each scene individually at high quality
 for scene in IntroScene PerpendicularDiameters FindMidpoint GoldenArc MarkVertices CompletePentagon Verification; do
     manim -qh animation.py $scene
 done
+
+# Then combine using ffmpeg (done automatically by main.py)
 ```
 
 ## Quality Options

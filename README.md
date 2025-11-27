@@ -195,9 +195,63 @@ Displays all available commands.
 ### `/exit` or `/quit` - Exit
 Exits the project manager.
 
+## 🎥 Visual Showcase
+
+### Featured: Regular Pentagon Construction
+
+A complete geometric construction demonstrating classical compass and straightedge techniques.
+
+**Preview:**
+
+![Pentagon Construction Preview](manim-projects/pentagon-construction/pentagon-preview.png)
+![Pentagon Construction Showcase](manim-projects/pentagon-construction/pentagon-showcase.png)
+
+**Watch the full animation:**
+`manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4`
+
+**Highlights:**
+- 7 detailed scenes showing step-by-step construction
+- Golden ratio embedded in the geometry
+- Complete verification with angle and side measurements
+- 4.2 MB, 1080p60 quality, ~2 minutes duration
+
+**From natural language to beautiful animation:**
+```
+"Animate the construction of a regular pentagon using only compass and straightedge"
+↓
+Complete video with research, planning, implementation, and rendering
+```
+
+**Technical achievements:**
+- ✓ Mathematically accurate construction using φ = (1+√5)/2
+- ✓ Smooth compass arc animations
+- ✓ Clear step-by-step pedagogical flow
+- ✓ 100+ externalized visual parameters in params.py
+- ✓ Comprehensive research report with historical context
+
+---
+
 ## 🎨 Example Projects
 
-### 1. Huffman Encoding Algorithm
+### 1. Regular Pentagon Construction
+**Request:**
+```
+Animate the construction of a regular pentagon using only compass and straightedge
+```
+
+**Output:**
+- 7 scenes showing complete construction
+- IntroScene → Perpendicular Diameters → Find Midpoint → Golden Arc → Mark Vertices → Complete Pentagon → Verification
+- Step-by-step compass and straightedge operations
+- Golden ratio calculation and visualization
+- Verification of angles (108°) and equal side lengths
+- Research report with historical context
+- 100+ visual parameters (externalized to params.py)
+- Combined video: 1080p60, 4.2 MB
+
+**Location:** `manim-projects/pentagon-construction/`
+
+### 2. Huffman Encoding Algorithm
 **Request:**
 ```
 Animate the Huffman encoding algorithm compressing Lorem ipsum text
@@ -214,20 +268,6 @@ Animate the Huffman encoding algorithm compressing Lorem ipsum text
 - 100+ customizable parameters
 
 **Compression achieved:** 48.12% (nearly 2x compression!)
-
-### 2. Regular Pentagon Construction
-**Request:**
-```
-Animate the construction of a regular pentagon using only compass and straightedge
-```
-
-**Output:**
-- 8 scenes showing complete construction
-- Step-by-step compass and straightedge operations
-- Golden ratio calculation
-- Verification of angles and measurements
-- Research report with historical context
-- 100+ visual parameters
 
 ### 3. Golden Ratio Spiral
 **Request:**
@@ -466,8 +506,8 @@ class IntroScene(Scene):  # Must inherit from Scene
 - [Manim Coding Skill](skills/manim-coding/README.md)
 
 ### Examples
+- [Pentagon Construction](manim-projects/pentagon-construction/README.md) - ⭐ **Featured showcase project**
 - [Huffman Encoding](manim-projects/huffman-encoding/README.md)
-- [Pentagon Construction](manim-projects/pentagon-construction/README.md)
 - [Golden Ratio Spiral](manim-projects/golden-ratio-spiral/README.md)
 
 ## 🎓 Best Practices
@@ -548,19 +588,24 @@ This project is provided as-is for educational and creative purposes.
 ## 🚀 Get Started Now
 
 ```bash
-# 1. Create your first animation
+# 1. View the featured example
+open manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4
+
+# 2. Create your first animation
 /animate Explain the Pythagorean theorem
 
-# 2. Render it
+# 3. Render it
 python main.py
 → Select project
 → Select animation.py
 → Choose scene or combined video
 
-# 3. Watch mathematics come to life! 🎬✨
+# 4. Watch mathematics come to life! 🎬✨
 ```
 
 **Make mathematics beautiful.** Create stunning animations that teach, inspire, and illuminate.
+
+**Featured example:** The [Regular Pentagon Construction](#featured-regular-pentagon-construction) showcases what this system can create - from natural language request to publication-ready mathematical animation.
 
 ---
 
