@@ -46,7 +46,8 @@ class ManimStudio:
     """Project manager for Manim animations - rendering and file organization"""
 
     def __init__(self, workspace_dir: str = "manim-projects"):
-        self.workspace_dir = Path(workspace_dir)
+        # Convert to absolute path to avoid issues when changing directories
+        self.workspace_dir = Path(workspace_dir).resolve()
         self.workspace_dir.mkdir(exist_ok=True)
         self.current_project: Optional[str] = None
         self.project_dir: Optional[Path] = None
