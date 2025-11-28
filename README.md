@@ -21,15 +21,6 @@ Complete animation with 5 scenes, 80.6% compression visualization, and customiza
 1. **Claude Code Plugin** - Intelligent agent that researches, plans, and implements animations
 2. **Project Manager** - Interactive interface for organizing projects and rendering videos
 
-## ✨ Key Features
-
-- 🔬 **Intelligent Research** - Automatically gathers information from Wikipedia, academic sources
-- 🎨 **Expert Implementation** - Generates Manim code with proper syntax and best practices
-- 📦 **Project Organization** - Each animation in its own directory with all assets
-- 🎛️ **Parameter Extraction** - Visual customization without touching code
-- 🎬 **Streamlined Rendering** - Select projects and scenes with interactive interface
-- 📊 **Combined Videos** - Automatically merge all scenes into single video
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -85,6 +76,8 @@ manim-agent/
 │   │   └── media/               # Rendered videos (created by Manim)
 │   │
 │   ├── golden-ratio-spiral/
+│   ├── lorenz-attractor-1.0/
+│   ├── lorenz-attractor-2.0/
 │   └── pentagon-construction/
 │
 ├── agents/                      # Agent definitions
@@ -201,39 +194,7 @@ Displays all available commands.
 ### `/exit` or `/quit` - Exit
 Exits the project manager.
 
-## 🎥 Visual Showcase
-### Featured Project: Huffman Encoding Process
-
-A comprehensive visualization of the Huffman encoding algorithm demonstrating data compression.
-
-**Watch the full animation:**
-[`manim-projects/huffman-encoding-process/media/videos/animation/1080p60/CombinedScenes.mp4`](manim-projects/huffman-encoding-process/media/videos/animation/1080p60/CombinedScenes.mp4)
-
-**What you'll see:**
-- 5 detailed scenes demonstrating the encoding process
-- PreBuiltTreeScene → EncodeSingleChar → EncodeFullMessage → BitComparison → CompressionStats
-- Visual Huffman tree with color-coded nodes and edges
-- Character-by-character encoding with path highlighting
-- Binary bit comparison (72 bits → 14 bits)
-- Compression statistics with animated progress gauge
-- ~3 minutes duration, 1080p60 quality
-
-**From natural language to beautiful animation:**
-```
-"Animate the Huffman encoding process for the message AABBBCCCC"
-↓
-Complete video showing tree structure, encoding steps, and 80.6% compression ratio
-```
-
-**Technical achievements:**
-- ✓ Interactive tree traversal visualization
-- ✓ Bit-by-bit encoding demonstration
-- ✓ Visual comparison of ASCII vs Huffman encoding
-- ✓ Dynamic compression ratio calculation (80.6% compression!)
-- ✓ 100+ customizable parameters extracted to params.py
-- ✓ Helper functions for tree building and path traversal
-
-### Lorenz Attractor 1.0 vs 2.0
+## Lorenz Attractor 1.0 vs 2.0
 
 A side-by-side comparison demonstrating the power of the new **agents & skills architecture**.
 
@@ -266,7 +227,8 @@ Orchestrates the complete workflow from concept to implementation.
 Researches mathematical concepts and creates animation plans.
 
 **Features:**
-- MediaWiki API for Wikipedia access (prevents 403 errors)
+- MediaWiki API for Wikipedia access
+- Websearch other relevant sites such as Brilliant.org, GeeksforGeeks, ProofWiki, and WolframAlpha
 - Research checklist before starting
 - Early exit for comprehensive sources
 - Scene-by-scene planning with visual specifications
@@ -320,12 +282,6 @@ OPACITY = {...}      # Fill and stroke opacities
 SPECIAL = {...}      # Algorithm-specific params
 ```
 
-**Benefits:**
-- Change visuals without touching code
-- Quick A/B testing of styles
-- Version control aesthetic changes
-- Non-coders can customize
-
 ### Quality Settings
 
 ```bash
@@ -341,6 +297,7 @@ manim -pqh animation.py SceneName
 # 4K quality (2160p, 60fps)
 manim -pqk animation.py SceneName
 ```
+
 
 ## 📊 Agent Workflows
 
@@ -405,59 +362,7 @@ manim -pqk animation.py SceneName
 3. Update animation.py to import parameters
 4. Generate README with customization guide
 
-## 🔧 Troubleshooting
-
-### Path Errors in Rendering
-
-**Issue:** "No output directory found"
-
-**Solution:** The system now correctly finds output directories after `os.chdir()`. Uses relative paths from current directory.
-
-**Fix applied:**
-```python
-# Builds path from current directory (after chdir to project_dir)
-media_videos = Path("media") / "videos" / filename_stem
-```
-
-### MediaWiki API Errors
-
-**Issue:** 403 Forbidden when fetching Wikipedia
-
-**Solution:** Use MediaWiki API instead of direct URLs:
-```
-https://en.wikipedia.org/w/api.php?action=query&titles=Topic&prop=extracts&format=json&formatversion=2&explaintext=1
-```
-
-### Missing ffmpeg
-
-**Issue:** "ffmpeg: command not found" when creating combined videos
-
-**Solution:**
-```bash
-# macOS
-brew install ffmpeg
-
-# Linux
-sudo apt install ffmpeg
-
-# Windows
-choco install ffmpeg
-```
-
-### Scene Not Found
-
-**Issue:** No Scene classes detected in file
-
-**Solution:** Ensure classes inherit from `Scene`:
-```python
-from manim import *
-
-class IntroScene(Scene):  # Must inherit from Scene
-    def construct(self):
-        ...
-```
-
-## 📖 Documentation
+## 📖 Documentations
 
 ### Quick References
 - [Manim Coding Quick Reference](skills/manim-coding/quick-reference.md)
@@ -476,39 +381,22 @@ class IntroScene(Scene):  # Must inherit from Scene
 
 ## 🎓 Best Practices
 
-### 1. Be Specific in Requests
+### 1. Be Specific in Requests - describe scene-by-scene
 ```
 ✅ "Animate the construction of a regular pentagon using compass and straightedge"
 ❌ "Make a geometry animation"
 ```
 
-### 2. Specify Audience
+### 2. Specify Audience / Concept Complexity
 ```
 ✅ "Explain derivatives for high school students"
 ✅ "Rigorous epsilon-delta proof for graduate students"
 ```
 
-### 3. Iterate Gradually
-```
-1. Create basic animation
-2. Preview with /preview
-3. Refine colors, timing, emphasis
-4. Final render with /render
-```
-
-### 4. Use Parameter Files
+### 3. Use Parameter Files
 - Edit `params.py` for visual changes
 - Keep code changes for logic/math only
 - Version control both separately
-
-### 5. Organize Projects
-```
-manim-projects/
-├── 01-calculus-limits/
-├── 02-calculus-derivatives/
-├── 03-calculus-integrals/
-└── 04-fundamental-theorem/
-```
 
 ## 🤝 Contributing
 
@@ -530,22 +418,11 @@ manim-projects/
 3. Update agent to use new skill
 4. Add examples and documentation
 
-## 📝 Version Info
-
-**Version:** 1.0.0
-**Last Updated:** 2025-11-27
-**Manim Version:** Community Edition v0.19.0+
-**Python:** 3.8+
-
 ## 🎉 Acknowledgments
 
 - **Grant Sanderson (3Blue1Brown)** - Creator of original Manim
 - **Manim Community** - Maintaining Manim Community Edition
-- **Wikipedia, GeeksforGeeks, Programiz** - Authoritative mathematical content
-
-## 📄 License
-
-This project is provided as-is for educational and creative purposes.
+- **Wikipedia, GeeksforGeeks, Brilliant, ProofWiki** - Authoritative mathematical content
 
 ---
 
@@ -566,11 +443,3 @@ python main.py
 
 # 4. Watch mathematics come to life! 🎬✨
 ```
-
-**Make mathematics beautiful.** Create stunning animations that teach, inspire, and illuminate.
-
-**Featured examples:** [Huffman Encoding](#featured-project-2-huffman-encoding-process) showcase what this system can create - from natural language requests to publication-ready mathematical animations.
-
----
-
-**Questions?** Check the [documentation](#documentation) or ask Claude directly!
