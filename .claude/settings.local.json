@@ -21,7 +21,10 @@
       "Bash(ffmpeg:*)",
       "Bash(find:*)",
       "Skill(manim-coding)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "WebFetch(domain:www.dynamicmath.xyz)",
+      "WebFetch(domain:observablehq.com)",
+      "Bash(timeout 180 manim:*)"
     ],
     "deny": [],
     "ask": []

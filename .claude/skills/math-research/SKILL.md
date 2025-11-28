@@ -18,6 +18,28 @@ When activated, this skill will:
 3. Create detailed plans for Manim animations
 4. Write comprehensive markdown reports
 
+## Project Directory Setup
+
+**IMPORTANT**: Research reports should be saved in the active Manim project directory.
+
+### Directory Structure
+
+When working on a Manim animation project:
+- Project directory: `/manim-projects/your-project-name/`
+- Research reports: `/manim-projects/your-project-name/research-reports/`
+
+### Setup Before Research
+
+```bash
+# Ensure you're in the correct project directory
+cd /manim-projects/your-project-name
+
+# Create research-reports subdirectory
+mkdir -p research-reports
+```
+
+**All research reports MUST be saved in**: `/manim-projects/your-project-name/research-reports/`
+
 ## When to Use This Skill
 
 Use this skill when you need to:
@@ -579,9 +601,23 @@ Examples:
 - `research-taylor-series-2025-11-26.md`
 
 ### File Location
-Save reports in: `research-reports/` directory
 
-If directory doesn't exist, create it.
+**CRITICAL**: Save reports in the project's research directory:
+
+**Full path**: `/manim-projects/your-project-name/research-reports/`
+
+Before saving:
+```bash
+# Verify you're in the correct location
+pwd  # Should show /manim-projects/your-project-name
+
+# Create directory if needed
+mkdir -p research-reports
+```
+
+**Example full paths**:
+- `/manim-projects/fourier-epicycles/research-reports/research-fourier-transform-2025-11-26.md`
+- `/manim-projects/calculus-viz/research-reports/research-derivatives-2025-11-26.md`
 
 ---
 

@@ -12,6 +12,70 @@ This skill provides comprehensive reference for Manim Community Edition (ManimCE
 
 ---
 
+## SECTION 0: PROJECT DIRECTORY SETUP (CRITICAL - DO THIS FIRST!)
+
+**IMPORTANT**: Before starting any Manim project, you MUST set up the correct working directory.
+
+### Directory Management Rules
+
+1. **Create a project subdirectory** in `/manim-projects/`
+2. **Work exclusively within that subdirectory** for all file operations
+3. **Use descriptive project names** (e.g., `fourier-epicycles`, `calculus-derivatives`, `linear-algebra-transforms`)
+
+### Setup Steps
+
+When starting a new Manim project:
+
+```bash
+# Step 1: Create project directory
+mkdir -p /manim-projects/your-project-name
+
+# Step 2: Navigate to project directory
+cd /manim-projects/your-project-name
+
+# Step 3: Create your animation file
+# (Use Write tool to create the .py file in this directory)
+
+# Step 4: Run manim from within the project directory
+manim -pql animation.py SceneName
+```
+
+### Example Workflow
+
+```bash
+# For a Fourier Transform project:
+mkdir -p /manim-projects/fourier-epicycles
+cd /manim-projects/fourier-epicycles
+
+# Now create fourier_animation.py in this directory
+# Then run:
+manim -pql fourier_animation.py FourierScene
+```
+
+### File Paths
+
+- **Animation files**: `/manim-projects/your-project-name/animation.py`
+- **Asset files** (SVGs, images): `/manim-projects/your-project-name/assets/`
+- **Output videos**: `/manim-projects/your-project-name/media/videos/...`
+- **Research reports**: `/manim-projects/your-project-name/research-reports/` (if needed)
+
+### Before Every File Operation
+
+**Always verify you're in the correct directory**:
+
+```bash
+pwd  # Should show /manim-projects/your-project-name
+```
+
+### Important Notes
+
+- **DO NOT** work in the root directory or home directory
+- **DO NOT** create Manim files outside of `/manim-projects/`
+- **ALWAYS** use absolute paths starting with `/manim-projects/your-project-name/` when using Write, Read, or other file tools
+- The `/manim-projects/` directory should already exist on the system
+
+---
+
 ## SECTION 1: ESSENTIAL BASICS (Most Commonly Used)
 
 These are the fundamental commands and patterns used in virtually every Manim project.

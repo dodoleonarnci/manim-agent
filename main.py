@@ -312,175 +312,217 @@ class ManimStudio:
 
     def render_animation(self, quick: bool = False):
         """Render the animation with correct handling and no accidental Path→str conversion."""
-        # Step 1: Select project
-        if not self.current_project:
-            projects = self.list_projects()
-            if not projects:
-                print(f"{Colors.RED}No projects found in manim-projects/{Colors.ENDC}")
-                return
+        # Save original working directory to restore later
+        original_dir = os.getcwd()
 
-            print(f"\n{Colors.BOLD}Select Project:{Colors.ENDC}\n")
-            for i, p in enumerate(projects, 1):
-                print(f"  {Colors.CYAN}{i}. {p}{Colors.ENDC}")
-
-            choice = input(f"\n{Colors.BOLD}Project: {Colors.ENDC}").strip()
-            try:
-                project_name = projects[int(choice) - 1]
-                if not self.load_project(project_name):
-                    return
-            except:
-                print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
-                return
-
-        # Step 2: Python files
-        py_files = list(self.project_dir.glob("*.py"))
-        if not py_files:
-            print(f"{Colors.RED}No Python files found.{Colors.ENDC}")
-            return
-
-        # Step 3: Select file
-        if len(py_files) == 1:
-            file_to_render = py_files[0]  # Path object
-        else:
-            print(f"\n{Colors.BOLD}Select Animation File:{Colors.ENDC}\n")
-            for i, f in enumerate(py_files, 1):
-                print(f"  {Colors.CYAN}{i}. {f.name}{Colors.ENDC}")
-
-            choice = input(f"\n{Colors.BOLD}File: {Colors.ENDC}").strip()
-            try:
-                file_to_render = py_files[int(choice) - 1]  # Path object
-            except:
-                print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
-                return
-
-        # Path object stays a Path object
-        filename = file_to_render.name  # string passed to manim
-
-        # Step 4: Scene list
-        scenes = self.get_scenes_from_file(file_to_render)
-        if not scenes:
-            print(f"{Colors.RED}No Scene classes found.{Colors.ENDC}")
-            return
-
-        # Step 5: Scene selection
-        print(f"\n{Colors.BOLD}Select Scene:{Colors.ENDC}\n")
-        print(f"  {Colors.CYAN}-1. Combined video (no popups){Colors.ENDC}")
-        print(f"  {Colors.CYAN} 0. All scenes separately{Colors.ENDC}")
-        for i, s in enumerate(scenes, 1):
-            print(f"  {Colors.CYAN}{i}. {s}{Colors.ENDC}")
-
-        choice = input(f"\n{Colors.BOLD}Scene: {Colors.ENDC}").strip()
         try:
-            idx = int(choice)
-        except:
-            print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
-            return
+            # Step 1: Select project
+            if not self.current_project:
+                projects = self.list_projects()
+                if not projects:
+                    print(f"{Colors.RED}No projects found in manim-projects/{Colors.ENDC}")
+                    return
 
-        quality = "l" if quick else "h"
+                print(f"\n{Colors.BOLD}Select Project:{Colors.ENDC}\n")
+                for i, p in enumerate(projects, 1):
+                    print(f"  {Colors.CYAN}{i}. {p}{Colors.ENDC}")
 
-        os.chdir(self.project_dir)
+                try:
+                    choice = input(f"\n{Colors.BOLD}Project: {Colors.ENDC}").strip()
+                    if not choice:
+                        print(f"{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                        return
+                    project_name = projects[int(choice) - 1]
+                    if not self.load_project(project_name):
+                        return
+                except (ValueError, IndexError):
+                    print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+                    return
+                except KeyboardInterrupt:
+                    print(f"\n{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                    return
 
-        # --------------------------- CASE -1: Combined video -----------------------------
-        if idx == -1:
-            # Render the CombinedScenes class which contains all scenes in order
-            cmd = f"manim -pq{quality} {filename} CombinedScenes"
-            print(f"\n{Colors.GREEN}→ Rendering combined scenes: {Colors.BOLD}CombinedScenes{Colors.ENDC}")
-            print(f"{Colors.CYAN}→ This may take several minutes...{Colors.ENDC}\n")
-
-            # Run and show manim output
-            result = os.system(cmd)
-
-            if result != 0:
-                print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
-                print(f"{Colors.RED}✗ ERROR: Failed to render CombinedScenes{Colors.ENDC}")
-                print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+            # Step 2: Python files
+            py_files = list(self.project_dir.glob("*.py"))
+            if not py_files:
+                print(f"{Colors.RED}No Python files found.{Colors.ENDC}")
                 return
 
-            print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
-            print(f"{Colors.GREEN}✓ SCENE COMPLETE: CombinedScenes{Colors.ENDC}")
-            print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
-
-            media_dir = self.find_output_video_dir(file_to_render)
-            if not media_dir:
-                print(f"{Colors.RED}No output directory found.{Colors.ENDC}")
-                return
-
-            # Look for the CombinedScenes.mp4 file
-            combined_video = media_dir / "CombinedScenes.mp4"
-            if combined_video.exists():
-                file_size = combined_video.stat().st_size / (1024 * 1024)  # MB
-                print(f"\n{Colors.GREEN}✓ Combined scenes video complete!{Colors.ENDC}")
-                print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {combined_video}")
-                print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
+            # Step 3: Select file
+            if len(py_files) == 1:
+                file_to_render = py_files[0]  # Path object
             else:
-                print(f"\n{Colors.YELLOW}Rendering complete, but CombinedScenes.mp4 not found.{Colors.ENDC}")
-                print(f"{Colors.YELLOW}Make sure the animation file has a CombinedScenes class.{Colors.ENDC}")
-            return
+                print(f"\n{Colors.BOLD}Select Animation File:{Colors.ENDC}\n")
+                for i, f in enumerate(py_files, 1):
+                    print(f"  {Colors.CYAN}{i}. {f.name}{Colors.ENDC}")
 
-        # --------------------------- CASE 0: Separate videos -----------------------------
-        if idx == 0:
-            total_scenes = len(scenes)
-            print(f"\n{Colors.GREEN}→ Rendering {total_scenes} scenes separately...{Colors.ENDC}\n")
+                try:
+                    choice = input(f"\n{Colors.BOLD}File: {Colors.ENDC}").strip()
+                    if not choice:
+                        print(f"{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                        return
+                    file_to_render = py_files[int(choice) - 1]  # Path object
+                except (ValueError, IndexError):
+                    print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+                    return
+                except KeyboardInterrupt:
+                    print(f"\n{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                    return
 
-            for i, scene in enumerate(scenes, 1):
+            # Path object stays a Path object
+            filename = file_to_render.name  # string passed to manim
+
+            # Step 4: Scene list
+            scenes = self.get_scenes_from_file(file_to_render)
+            if not scenes:
+                print(f"{Colors.RED}No Scene classes found.{Colors.ENDC}")
+                return
+
+            # Step 5: Scene selection
+            print(f"\n{Colors.BOLD}Select Scene:{Colors.ENDC}\n")
+            print(f"  {Colors.CYAN}-1. Combined video (no popups){Colors.ENDC}")
+            print(f"  {Colors.CYAN} 0. All scenes separately{Colors.ENDC}")
+            for i, s in enumerate(scenes, 1):
+                print(f"  {Colors.CYAN}{i}. {s}{Colors.ENDC}")
+
+            try:
+                choice = input(f"\n{Colors.BOLD}Scene: {Colors.ENDC}").strip()
+                if not choice:
+                    print(f"{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                    return
+                idx = int(choice)
+            except (ValueError, TypeError):
+                print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+                return
+            except KeyboardInterrupt:
+                print(f"\n{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                return
+
+            quality = "l" if quick else "h"
+
+            os.chdir(self.project_dir)
+
+            # --------------------------- CASE -1: Combined video -----------------------------
+            if idx == -1:
+                # Render the CombinedScenes class which contains all scenes in order
+                cmd = f"manim -pq{quality} {filename} CombinedScenes"
+                print(f"\n{Colors.GREEN}→ Rendering combined scenes: {Colors.BOLD}CombinedScenes{Colors.ENDC}")
+                print(f"{Colors.CYAN}→ This may take several minutes...{Colors.ENDC}\n")
+
+                # Run and show manim output
+                result = os.system(cmd)
+
+                if result != 0:
+                    print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
+                    print(f"{Colors.RED}✗ ERROR: Failed to render CombinedScenes{Colors.ENDC}")
+                    print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                    print(f"{Colors.YELLOW}→ Check the error output above for details{Colors.ENDC}")
+                    print(f"{Colors.YELLOW}→ You can continue using other commands{Colors.ENDC}\n")
+                    return
+
+                print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+                print(f"{Colors.GREEN}✓ SCENE COMPLETE: CombinedScenes{Colors.ENDC}")
+                print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
+
+                media_dir = self.find_output_video_dir(file_to_render)
+                if not media_dir:
+                    print(f"{Colors.YELLOW}Output directory not found.{Colors.ENDC}")
+                    return
+
+                # Look for the CombinedScenes.mp4 file
+                combined_video = media_dir / "CombinedScenes.mp4"
+                if combined_video.exists():
+                    file_size = combined_video.stat().st_size / (1024 * 1024)  # MB
+                    print(f"\n{Colors.GREEN}✓ Combined scenes video complete!{Colors.ENDC}")
+                    print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {combined_video}")
+                    print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
+                else:
+                    print(f"\n{Colors.YELLOW}Rendering complete, but CombinedScenes.mp4 not found.{Colors.ENDC}")
+                    print(f"{Colors.YELLOW}Make sure the animation file has a CombinedScenes class.{Colors.ENDC}")
+                return
+
+            # --------------------------- CASE 0: Separate videos -----------------------------
+            if idx == 0:
+                total_scenes = len(scenes)
+                print(f"\n{Colors.GREEN}→ Rendering {total_scenes} scenes separately...{Colors.ENDC}\n")
+
+                failed_scenes = []
+                successful_scenes = []
+
+                for i, scene in enumerate(scenes, 1):
+                    cmd = f"manim -pq{quality} {filename} {scene}"
+                    print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}")
+                    print(f"{Colors.GREEN}→ Rendering scene {i}/{total_scenes}: {Colors.BOLD}{scene}{Colors.ENDC}")
+                    print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}\n")
+
+                    result = os.system(cmd)
+
+                    if result != 0:
+                        print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
+                        print(f"{Colors.RED}✗ ERROR: Failed to render {scene}{Colors.ENDC}")
+                        print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                        print(f"{Colors.YELLOW}→ Continuing with next scene...{Colors.ENDC}\n")
+                        failed_scenes.append(scene)
+                    else:
+                        print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+                        print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene} ({i}/{total_scenes}){Colors.ENDC}")
+                        print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}\n")
+                        successful_scenes.append(scene)
+
+                # Summary
+                print(f"\n{Colors.BOLD}{'='*60}{Colors.ENDC}")
+                print(f"{Colors.BOLD}Rendering Summary:{Colors.ENDC}")
+                print(f"{Colors.GREEN}✓ Successful: {len(successful_scenes)}/{total_scenes}{Colors.ENDC}")
+                if failed_scenes:
+                    print(f"{Colors.RED}✗ Failed: {len(failed_scenes)}/{total_scenes}{Colors.ENDC}")
+                    print(f"{Colors.RED}  Failed scenes: {', '.join(failed_scenes)}{Colors.ENDC}")
+                print(f"{Colors.BOLD}{'='*60}{Colors.ENDC}\n")
+
+                media_dir = self.find_output_video_dir(file_to_render)
+                if media_dir and successful_scenes:
+                    print(f"{Colors.CYAN}→ Saved in:{Colors.ENDC}  {media_dir}\n")
+                return
+
+            # --------------------------- CASE 1..n: Single scene -----------------------------
+            if 1 <= idx <= len(scenes):
+                scene = scenes[idx - 1]
                 cmd = f"manim -pq{quality} {filename} {scene}"
-                print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}")
-                print(f"{Colors.GREEN}→ Rendering scene {i}/{total_scenes}: {Colors.BOLD}{scene}{Colors.ENDC}")
-                print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}\n")
+                print(f"\n{Colors.GREEN}→ Rendering scene: {Colors.BOLD}{scene}{Colors.ENDC}\n")
 
+                # Run and show manim output
                 result = os.system(cmd)
 
                 if result != 0:
                     print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
                     print(f"{Colors.RED}✗ ERROR: Failed to render {scene}{Colors.ENDC}")
                     print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                    print(f"{Colors.YELLOW}→ Check the error output above for details{Colors.ENDC}")
+                    print(f"{Colors.YELLOW}→ You can continue using other commands{Colors.ENDC}\n")
+                    return
+
+                print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+                print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene}{Colors.ENDC}")
+                print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
+
+                media_dir = self.find_output_video_dir(file_to_render)
+                if media_dir:
+                    output = media_dir / f"{scene}.mp4"
+                    if output.exists():
+                        file_size = output.stat().st_size / (1024 * 1024)  # MB
+                        print(f"{Colors.GREEN}✓ Render complete!{Colors.ENDC}")
+                        print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {output}")
+                        print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
+                    else:
+                        print(f"\n{Colors.YELLOW}Rendering complete, but video file not found at expected location.{Colors.ENDC}")
                 else:
-                    print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
-                    print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene} ({i}/{total_scenes}){Colors.ENDC}")
-                    print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}\n")
-
-            media_dir = self.find_output_video_dir(file_to_render)
-            if media_dir:
-                print(f"\n{Colors.GREEN}✓ All {total_scenes} scenes rendered successfully!{Colors.ENDC}")
-                print(f"{Colors.CYAN}→ Saved in:{Colors.ENDC}  {media_dir}")
-            else:
-                print(f"\n{Colors.YELLOW}Rendering complete, but output directory not found.{Colors.ENDC}")
-            return
-
-        # --------------------------- CASE 1..n: Single scene -----------------------------
-        if 1 <= idx <= len(scenes):
-            scene = scenes[idx - 1]
-            cmd = f"manim -pq{quality} {filename} {scene}"
-            print(f"\n{Colors.GREEN}→ Rendering scene: {Colors.BOLD}{scene}{Colors.ENDC}\n")
-
-            # Run and show manim output
-            result = os.system(cmd)
-
-            if result != 0:
-                print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
-                print(f"{Colors.RED}✗ ERROR: Failed to render {scene}{Colors.ENDC}")
-                print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                    print(f"\n{Colors.YELLOW}Rendering complete, but output directory not found.{Colors.ENDC}")
                 return
 
-            print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
-            print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene}{Colors.ENDC}")
-            print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
+            print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
 
-            media_dir = self.find_output_video_dir(file_to_render)
-            if media_dir:
-                output = media_dir / f"{scene}.mp4"
-                if output.exists():
-                    file_size = output.stat().st_size / (1024 * 1024)  # MB
-                    print(f"{Colors.GREEN}✓ Render complete!{Colors.ENDC}")
-                    print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {output}")
-                    print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
-                else:
-                    print(f"\n{Colors.YELLOW}Rendering complete, but video file not found at expected location.{Colors.ENDC}")
-            else:
-                print(f"\n{Colors.YELLOW}Rendering complete, but output directory not found.{Colors.ENDC}")
-            return
-
-        print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+        finally:
+            # Always restore the original working directory
+            os.chdir(original_dir)
 
 
 
@@ -552,12 +594,17 @@ class ManimStudio:
                 active = " (CURRENT)" if project == self.current_project else ""
                 print(f"  {Colors.CYAN}{i}. {project}{Colors.ENDC}{Colors.GREEN}{active}{Colors.ENDC}")
 
-            choice = input(f"\n{Colors.BOLD}Project (1-{len(projects)}): {Colors.ENDC}").strip()
             try:
+                choice = input(f"\n{Colors.BOLD}Project (1-{len(projects)}): {Colors.ENDC}").strip()
+                if not choice:
+                    print(f"{Colors.YELLOW}Cancelled.{Colors.ENDC}")
+                    return
                 project_name = projects[int(choice) - 1]
                 self.load_project(project_name)
             except (ValueError, IndexError):
                 print(f"{Colors.RED}Invalid choice.{Colors.ENDC}")
+            except KeyboardInterrupt:
+                print(f"\n{Colors.YELLOW}Cancelled.{Colors.ENDC}")
 
         elif cmd == '/list':
             self.print_projects()
