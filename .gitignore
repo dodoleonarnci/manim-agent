@@ -38,7 +38,7 @@ Thumbs.db
 *.bak
 
 # Keep project structure but ignore media
-manim-projects/*/media/videos/**/*
+manim-projects/*/media/videos/**/*/partial_movie_files
 !manim-projects/*/media/videos/.gitkeep
 
 # Exception: Keep CombinedScenes.mp4 for showcase projects
