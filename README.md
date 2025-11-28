@@ -4,7 +4,7 @@ A comprehensive system for creating beautiful mathematical animations using Clau
 
 
 Claude Code prompt only:
-![Video](https://github.com/user-attachments/assets/d01f324a-05c5-453f-9050-f1935082f93a)
+![Video](https://github.com/user-attachments/assets/c3dc5ae0-7ee1-4101-9f3f-bec1c3c8bb29)
 
 Agent workflow:
 ![Video](https://github.com/user-attachments/assets/a69dec0c-7893-4929-8744-8a476b05f07e)
