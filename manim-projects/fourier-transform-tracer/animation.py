@@ -467,9 +467,9 @@ class Scene2_EpicycleMechanics(Scene):
         # The update function already updates all arrows and circles
         arrows[0].add_updater(update_epicycles)
 
-        # Animate rotation (2 full rotations)
+        # Animate rotation
         self.play(
-            time_tracker.animate.set_value(2),
+            time_tracker.animate.set_value(params.SCENE2_NUM_ROTATIONS),
             run_time=params.SCENE2_ROTATION_DURATION,
             rate_func=linear
         )
@@ -594,12 +594,25 @@ class Scene3_SVGTracing(Scene):
             self.play(FadeOut(svg_mob), run_time=1)
             return
 
-        # Animate epicycles appearing
-        self.play(
-            LaggedStart(*[Create(c) for c in circles], lag_ratio=params.SCENE3_EPICYCLE_LAG_RATIO),
-            LaggedStart(*[GrowArrow(a) for a in arrows], lag_ratio=params.SCENE3_EPICYCLE_LAG_RATIO),
-            run_time=params.SCENE3_EPICYCLE_CREATE_TIME
-        )
+        # Add epicycles in batches of 100 for efficient initialization
+        # This ensures proper updater tracking while keeping animation smooth
+        batch_size = 100
+        num_batches = (len(circles) + batch_size - 1) // batch_size  # Ceiling division
+
+        for batch_idx in range(num_batches):
+            start_idx = batch_idx * batch_size
+            end_idx = min(start_idx + batch_size, len(circles))
+
+            # Create animations for this batch
+            batch_circles = [Create(circles[i]) for i in range(start_idx, end_idx)]
+            batch_arrows = [GrowArrow(arrows[i]) for i in range(start_idx, end_idx)]
+
+            # Show all epicycles in this batch together
+            self.play(
+                *batch_circles,
+                *batch_arrows,
+                run_time=params.SCENE3_EPICYCLE_CREATE_TIME / num_batches
+            )
 
         # Setup traced path
         traced_path_color = globals()[params.SCENE3_TRACED_PATH_COLOR]
@@ -620,33 +633,34 @@ class Scene3_SVGTracing(Scene):
             # Get current time from tracker
             time = time_tracker.get_value()
 
-            current_pos = ORIGIN
-
-            for i, (arrow, circle, coeff, freq) in enumerate(zip(arrows, circles, top_coeffs, top_freqs)):
+            for i, (arrow, coeff, freq) in enumerate(zip(arrows, top_coeffs, top_freqs)):
                 # Rotate coefficient by frequency
                 rotated = coeff * cmath.exp(1j * freq * 2 * PI * time)
 
+                # Determine center (tip of previous arrow or origin)
+                if i == 0:
+                    center = ORIGIN
+                else:
+                    center = arrows[i-1].get_end()
+
                 # Convert to 2D coordinates
-                new_pos = current_pos + np.array([rotated.real, rotated.imag, 0])
+                new_pos = center + np.array([rotated.real, rotated.imag, 0])
 
                 # Update arrow
-                arrow.put_start_and_end_on(current_pos, new_pos)
+                arrow.put_start_and_end_on(center, new_pos)
 
                 # Update circle - move to current position
-                circle.move_to(current_pos)
-
-                # Next circle starts at this tip
-                current_pos = new_pos
+                circles[i].move_to(center)
 
         # Add updater only once to avoid redundant calls
         # The update function already updates all arrows and circles
         arrows[0].add_updater(update_epicycles)
 
         # Animate time tracker to create rotation
-        # Use SCENE3_ROTATION_DURATION from params (can be customized by user)
+        # Use SCENE3_NUM_ROTATIONS and SCENE3_ROTATION_DURATION from params
         # This will create smooth continuous rotation
         self.play(
-            time_tracker.animate.set_value(3),
+            time_tracker.animate.set_value(params.SCENE3_NUM_ROTATIONS),
             run_time=params.SCENE3_ROTATION_DURATION,
             rate_func=linear
         )
@@ -738,7 +752,6 @@ class Scene3_SVGTracing(Scene):
             current_pos = new_pos
 
         return circles, arrows
-
 
 # ============================================================================
 # COMBINED SCENE: ALL THREE SCENES IN SEQUENCE

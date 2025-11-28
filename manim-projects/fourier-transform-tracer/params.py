@@ -87,6 +87,7 @@ SCENE2_FIRST_EPICYCLE_TIME = 1.5
 SCENE2_FIRST_EPICYCLE_CREATE_TIME = 1.5  # Time to create first epicycle
 SCENE2_ADDITIONAL_EPICYCLE_TIME = 0.8
 SCENE2_REMAINING_EPICYCLE_CREATE_TIME = 0.8  # Time to create each remaining epicycle
+SCENE2_NUM_ROTATIONS = 2  # Number of full rotations (2 = twice around)
 SCENE2_ROTATION_DURATION = 6.5  # How long epicycles rotate
 SCENE2_FADEOUT_TIME = 0.5
 
@@ -114,7 +115,8 @@ SCENE3_SVG_SHOW_TIME = 2.0
 SCENE3_SVG_WAIT_TIME = 0.5
 SCENE3_EPICYCLES_APPEAR_TIME = 2.0
 SCENE3_EPICYCLE_CREATE_TIME = 2.0  # Time to create all epicycles
-SCENE3_ROTATION_DURATION = 60.0  # Duration of rotation animation (user-customizable)
+SCENE3_NUM_ROTATIONS = 1  # Number of times to trace the shape (1 = once, 2 = twice, etc.)
+SCENE3_ROTATION_DURATION = 30.0  # Duration of rotation animation (user-customizable)
 SCENE3_FINALE_TIME = 2.0
 SCENE3_FINAL_WAIT_TIME = 1.0
 SCENE3_FINALE_WAIT_TIME = 1.0  # Wait time after finale
@@ -135,8 +137,8 @@ SCENE3_SAMPLE_POINTS_FADEOUT_TIME = 0.8  # Time to fade out sample points
 DEFAULT_SVG_PATH = "woman_flower.svg"  # None = use built-in heart shape
 DEFAULT_SHAPE_TYPE = "heart"  # "heart", "star", "circle", or "square"
 SCENE3_DEFAULT_SHAPE_RADIUS = 2.0  # Radius for default shape
-NUM_SAMPLES = 2000  # Number of points to sample from the curve
-NUM_EPICYCLES = 2000  # Number of epicycles to use (more = more accurate, slower)
+NUM_SAMPLES = 1000  # Number of points to sample from the curve
+NUM_EPICYCLES = 1000  # Number of epicycles to use (more = more accurate, slower)
 
 # DFT computation method
 USE_FAST_FFT = True  # True = use NumPy FFT, False = use manual DFT

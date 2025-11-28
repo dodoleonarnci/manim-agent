@@ -24,7 +24,8 @@
       "Bash(tree:*)",
       "WebFetch(domain:www.dynamicmath.xyz)",
       "WebFetch(domain:observablehq.com)",
-      "Bash(timeout 180 manim:*)"
+      "Bash(timeout 180 manim:*)",
+      "Bash(timeout 30 manim:*)"
     ],
     "deny": [],
     "ask": []

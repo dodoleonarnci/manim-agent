@@ -252,7 +252,7 @@ USER REQUEST: "Make this more colorful and slower"
 ├─────────────────────────────────────────────────────┤
 │ • Edit code with new colors                        │
 │ • Adjust run_time parameters                       │
-│ • Test changes                                     │
+│ • Do NOT create separate test animations            │
 │                                                     │
 │ OUTPUT: Modified code with new styling             │
 └─────────────────────────────────────────────────────┘
