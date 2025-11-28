@@ -2,6 +2,19 @@
 
 A comprehensive system for creating beautiful mathematical animations using Claude Code and Manim Community Edition. Combines intelligent research, expert coding, and streamlined project management into a complete animation workflow.
 
+
+Claude Code prompt only:
+https://github.com/user-attachments/assets/ca62efc3-d3df-462b-881b-4163b17fb19c
+
+Agent workflow:
+https://github.com/user-attachments/assets/a69dec0c-7893-4929-8744-8a476b05f07e
+
+Longer video demo (done in one shot):
+https://github.com/user-attachments/assets/f72ebea0-5fdc-4b60-806a-677d8c573f9b
+
+
+
+
 ## 🎯 What This Does
 
 **Create professional mathematical animations from natural language requests:**
