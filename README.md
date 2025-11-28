@@ -4,7 +4,9 @@ A comprehensive system for creating beautiful mathematical animations using Clau
 
 ## Claude Code prompt only vs. Agent workflow
 <img src="https://github.com/user-attachments/assets/6b6632f7-e239-44a9-a9ea-1f8af2754781" width="400"/> <img src="https://github.com/user-attachments/assets/bca3a255-a4cd-428b-9838-e2396ae4e9d0" width="400"/> 
-## Longer video demo (done in one shot): ![animation](https://github.com/user-attachments/assets/ef063faf-cc34-4234-bc51-9a1a6c55150c)
+## Longer video demos (done in one shot)
+![Fourier Transform Drawing](https://github.com/user-attachments/assets/cc745e72-d532-4737-9840-ea8ea5f78ddc)
+![Huffman Encoding](https://github.com/user-attachments/assets/ef063faf-cc34-4234-bc51-9a1a6c55150c)
 
 
 ## 🎯 What This Does
