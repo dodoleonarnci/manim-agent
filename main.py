@@ -462,7 +462,7 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         # --------------------------- CASE -1: Combined video -----------------------------
         if idx == -1:
             # Render the CombinedScenes class which contains all scenes in order
-            cmd = f"manim -q{quality} {filename} CombinedScenes"
+            cmd = f"manim -pq{quality} {filename} CombinedScenes"
             print(f"\n{Colors.GREEN}→ Rendering combined scenes (no auto-play){Colors.ENDC}")
             print(f"{Colors.CYAN}Running: {cmd}{Colors.ENDC}")
             os.system(cmd)

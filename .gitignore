@@ -40,3 +40,7 @@ Thumbs.db
 # Keep project structure but ignore media
 manim-projects/*/media/videos/**/*
 !manim-projects/*/media/videos/.gitkeep
+
+# Exception: Keep CombinedScenes.mp4 for showcase projects
+!manim-projects/pentagon-construction/media/videos/**/CombinedScenes.mp4
+!manim-projects/huffman-encoding-process/media/videos/**/CombinedScenes.mp4
