@@ -9,15 +9,15 @@ dist/
 build/
 
 # Manim outputs
-media/
 *.mp4
 *.mov
 *.gif
 *.png
+*.svg
+*.tex
 !manim-projects/**/README.md
 
 # Project-specific
-manim-projects/*/media/
 manim-projects/*/session.json
 concat_list.txt
 

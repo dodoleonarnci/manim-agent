@@ -51,7 +51,6 @@ class ManimStudio:
         self.workspace_dir.mkdir(exist_ok=True)
         self.current_project: Optional[str] = None
         self.project_dir: Optional[Path] = None
-        self.session_file: Optional[Path] = None
 
     def clear_screen(self):
         """Clear the terminal screen"""
@@ -61,14 +60,14 @@ class ManimStudio:
         """Print welcome banner"""
         banner = f"""
 {Colors.CYAN}{Colors.BOLD}
-TPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPW
-Q                                                              Q
-Q            <� MANIM ANIMATION STUDIO <�                      Q
-Q                                                              Q
-Q     Project Manager for Manim Animations                    Q
-Q     Use with Claude Code for animation generation           Q
-Q                                                              Q
-ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
+----------------------------------------------------------------
+|                                                              |
+|             < MANIM ANIMATION STUDIO >                       |
+|                                                              |
+|     Project Manager for Manim Animations                     |
+|     Use with Claude Code for animation generation            |
+|                                                              |
+----------------------------------------------------------------
 {Colors.ENDC}
 """
         print(banner)
@@ -131,7 +130,6 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         print(f"\n{Colors.BOLD}=� Available Projects:{Colors.ENDC}\n")
         for i, project in enumerate(projects, 1):
             project_path = self.workspace_dir / project
-            session_file = project_path / "session.json"
 
             # Get project info
             created = datetime.fromtimestamp(project_path.stat().st_ctime)
@@ -170,19 +168,6 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         project_path.mkdir(parents=True)
         (project_path / "research-reports").mkdir()
 
-        # Initialize session file
-        session_data = {
-            "name": name,
-            "created": datetime.now().isoformat(),
-            "last_accessed": datetime.now().isoformat(),
-            "files": [],
-            "status": "active"
-        }
-
-        session_file = project_path / "session.json"
-        with open(session_file, 'w') as f:
-            json.dump(session_data, f, indent=2)
-
         # Create README
         readme = project_path / "README.md"
         with open(readme, 'w') as f:
@@ -190,8 +175,7 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
             f.write(f"Created: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n")
             f.write("## Project Files\n\n")
             f.write("- Animation code: `*.py`\n")
-            f.write("- Research reports: `research-reports/*.md`\n")
-            f.write("- Session history: `session.json`\n\n")
+            f.write("- Research reports: `research-reports/*.md`\n\n")
             f.write("## Rendering\n\n")
             f.write("```bash\n")
             f.write("# Preview (low quality)\n")
@@ -202,7 +186,6 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
 
         self.current_project = name
         self.project_dir = project_path
-        self.session_file = session_file
 
         print(f"\n{Colors.GREEN} Created new project: {name}{Colors.ENDC}")
         print(f"{Colors.CYAN}Location: {project_path}{Colors.ENDC}\n")
@@ -217,75 +200,13 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
             print(f"{Colors.RED}Error: Project '{name}' not found{Colors.ENDC}")
             return False
 
-        session_file = project_path / "session.json"
-
-        if not session_file.exists():
-            print(f"{Colors.YELLOW}Warning: session.json not found, creating new one{Colors.ENDC}")
-            session_data = {
-                "name": name,
-                "created": datetime.now().isoformat(),
-                "last_accessed": datetime.now().isoformat(),
-                "files": [],
-                "status": "active"
-            }
-        else:
-            with open(session_file, 'r') as f:
-                session_data = json.load(f)
-
-        # Update last accessed
-        session_data["last_accessed"] = datetime.now().isoformat()
-
         self.current_project = name
         self.project_dir = project_path
-        self.session_file = session_file
-
-        # Save updated session
-        with open(session_file, 'w') as f:
-            json.dump(session_data, f, indent=2)
 
         print(f"\n{Colors.GREEN} Loaded project: {name}{Colors.ENDC}")
         print(f"{Colors.CYAN}Location: {project_path}{Colors.ENDC}\n")
 
         return True
-
-    def save_session(self):
-        """Save current session state"""
-        if not self.session_file:
-            return
-
-        session_data = {
-            "name": self.current_project,
-            "created": datetime.now().isoformat(),  # Default to current time
-            "last_accessed": datetime.now().isoformat(),
-            "files": self._get_project_files(),
-            "status": "active"
-        }
-
-        # Preserve creation date if exists
-        if self.session_file.exists():
-            try:
-                with open(self.session_file, 'r') as f:
-                    existing = json.load(f)
-                    session_data["created"] = existing.get("created", datetime.now().isoformat())
-            except (json.JSONDecodeError, IOError):
-                pass  # Keep default creation time if file is corrupt
-
-        # Ensure parent directory exists
-        self.session_file.parent.mkdir(parents=True, exist_ok=True)
-
-        with open(self.session_file, 'w') as f:
-            json.dump(session_data, f, indent=2)
-
-    def _get_project_files(self) -> List[str]:
-        """Get list of files in current project"""
-        if not self.project_dir:
-            return []
-
-        files = []
-        for ext in ['*.py', '*.md']:
-            files.extend([str(f.relative_to(self.project_dir)) for f in self.project_dir.rglob(ext)])
-
-        return sorted(files)
 
     def show_project_info(self):
         """Show information about current project"""
@@ -361,7 +282,7 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
             print(f"{Colors.RED}Error reading file: {e}{Colors.ENDC}")
 
         return scenes
-    
+
     def find_output_video_dir(self, py_file: Path):
         """Find the Manim output directory for a given Python file.
         Manim creates: media/videos/<filename_without_extension>/<quality>/
@@ -463,9 +384,21 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         if idx == -1:
             # Render the CombinedScenes class which contains all scenes in order
             cmd = f"manim -pq{quality} {filename} CombinedScenes"
-            print(f"\n{Colors.GREEN}→ Rendering combined scenes (no auto-play){Colors.ENDC}")
-            print(f"{Colors.CYAN}Running: {cmd}{Colors.ENDC}")
-            os.system(cmd)
+            print(f"\n{Colors.GREEN}→ Rendering combined scenes: {Colors.BOLD}CombinedScenes{Colors.ENDC}")
+            print(f"{Colors.CYAN}→ This may take several minutes...{Colors.ENDC}\n")
+
+            # Run and show manim output
+            result = os.system(cmd)
+
+            if result != 0:
+                print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
+                print(f"{Colors.RED}✗ ERROR: Failed to render CombinedScenes{Colors.ENDC}")
+                print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                return
+
+            print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+            print(f"{Colors.GREEN}✓ SCENE COMPLETE: CombinedScenes{Colors.ENDC}")
+            print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
 
             media_dir = self.find_output_video_dir(file_to_render)
             if not media_dir:
@@ -486,15 +419,29 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
 
         # --------------------------- CASE 0: Separate videos -----------------------------
         if idx == 0:
-            print(f"\n{Colors.GREEN}→ Rendering each scene separately...{Colors.ENDC}")
-            for scene in scenes:
+            total_scenes = len(scenes)
+            print(f"\n{Colors.GREEN}→ Rendering {total_scenes} scenes separately...{Colors.ENDC}\n")
+
+            for i, scene in enumerate(scenes, 1):
                 cmd = f"manim -pq{quality} {filename} {scene}"
-                print(f"{Colors.CYAN}Running: {cmd}{Colors.ENDC}")
-                os.system(cmd)
+                print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}")
+                print(f"{Colors.GREEN}→ Rendering scene {i}/{total_scenes}: {Colors.BOLD}{scene}{Colors.ENDC}")
+                print(f"{Colors.CYAN}{'─'*60}{Colors.ENDC}\n")
+
+                result = os.system(cmd)
+
+                if result != 0:
+                    print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
+                    print(f"{Colors.RED}✗ ERROR: Failed to render {scene}{Colors.ENDC}")
+                    print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                else:
+                    print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+                    print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene} ({i}/{total_scenes}){Colors.ENDC}")
+                    print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}\n")
 
             media_dir = self.find_output_video_dir(file_to_render)
             if media_dir:
-                print(f"\n{Colors.GREEN}✓ All scenes rendered separately!{Colors.ENDC}")
+                print(f"\n{Colors.GREEN}✓ All {total_scenes} scenes rendered successfully!{Colors.ENDC}")
                 print(f"{Colors.CYAN}→ Saved in:{Colors.ENDC}  {media_dir}")
             else:
                 print(f"\n{Colors.YELLOW}Rendering complete, but output directory not found.{Colors.ENDC}")
@@ -504,16 +451,27 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         if 1 <= idx <= len(scenes):
             scene = scenes[idx - 1]
             cmd = f"manim -pq{quality} {filename} {scene}"
-            print(f"\n{Colors.GREEN}→ Rendering scene: {scene}{Colors.ENDC}")
-            print(f"{Colors.CYAN}Running: {cmd}{Colors.ENDC}")
-            os.system(cmd)
+            print(f"\n{Colors.GREEN}→ Rendering scene: {Colors.BOLD}{scene}{Colors.ENDC}\n")
+
+            # Run and show manim output
+            result = os.system(cmd)
+
+            if result != 0:
+                print(f"\n{Colors.RED}{'='*60}{Colors.ENDC}")
+                print(f"{Colors.RED}✗ ERROR: Failed to render {scene}{Colors.ENDC}")
+                print(f"{Colors.RED}{'='*60}{Colors.ENDC}")
+                return
+
+            print(f"\n{Colors.GREEN}{'='*60}{Colors.ENDC}")
+            print(f"{Colors.GREEN}✓ SCENE COMPLETE: {scene}{Colors.ENDC}")
+            print(f"{Colors.GREEN}{'='*60}{Colors.ENDC}")
 
             media_dir = self.find_output_video_dir(file_to_render)
             if media_dir:
                 output = media_dir / f"{scene}.mp4"
                 if output.exists():
                     file_size = output.stat().st_size / (1024 * 1024)  # MB
-                    print(f"\n{Colors.GREEN}✓ Render complete!{Colors.ENDC}")
+                    print(f"{Colors.GREEN}✓ Render complete!{Colors.ENDC}")
                     print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {output}")
                     print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
                 else:
@@ -535,19 +493,6 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         print(f"Type {Colors.GREEN}/help{Colors.ENDC} for commands.\n")
         print(f"{Colors.CYAN}Use Claude Code to create animation projects.{Colors.ENDC}")
         print(f"{Colors.CYAN}Use {Colors.GREEN}/load{Colors.ENDC} to select a project and {Colors.GREEN}/render{Colors.ENDC} to render scenes.{Colors.ENDC}\n")
-
-        # Auto-load last project if exists
-        projects = self.list_projects()
-        if projects:
-            print(f"Found {len(projects)} existing project(s).")
-            load_last = input(f"Load most recent project '{projects[-1]}'? (y/n): ").strip().lower()
-            if load_last == 'y':
-                self.load_project(projects[-1])
-            else:
-                print(f"Use {Colors.GREEN}/load{Colors.ENDC} to select a project.\n")
-        else:
-            print(f"{Colors.YELLOW}No projects found yet.{Colors.ENDC}")
-            print(f"{Colors.CYAN}Use Claude Code to create your first project in manim-projects/{Colors.ENDC}\n")
 
         # Main chat loop
         while True:
@@ -585,9 +530,6 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         args = parts[1] if len(parts) > 1 else ""
 
         if cmd in ['/exit', '/quit']:
-            print(f"\n{Colors.CYAN}Saving session...{Colors.ENDC}")
-            self.save_session()
-            print(f"{Colors.GREEN} Session saved{Colors.ENDC}")
             print(f"{Colors.CYAN}Goodbye! <�{Colors.ENDC}\n")
             sys.exit(0)
 
