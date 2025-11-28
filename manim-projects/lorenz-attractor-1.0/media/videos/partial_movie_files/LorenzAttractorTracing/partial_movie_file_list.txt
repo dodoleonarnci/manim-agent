@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/348953907_4147854484_1782707855.mp4'
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/944106732_2707224019_2981123155.mp4'
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/944106732_233831863_2448643340.mp4'
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/1059544620_1572490436_1279550933.mp4'
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/1420680986_3445771655_2318934543.mp4'
+file 'file:/Users/jialinzhang/Desktop/CS Research/manim-agent/manim-projects/lorenz-attractor/media/videos/lorenz_attractor_animation/1080p60/partial_movie_files/LorenzAttractorTracing/1527466997_2631580503_2063411902.mp4'

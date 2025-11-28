@@ -42,5 +42,6 @@ manim-projects/*/media/videos/**/*/partial_movie_files
 !manim-projects/*/media/videos/.gitkeep
 
 # Exception: Keep CombinedScenes.mp4 for showcase projects
-!manim-projects/pentagon-construction/media/videos/**/CombinedScenes.mp4
+!manim-projects/lorenz-attractor-1.0/media/videos/**/LorenzAttractorTracing.mp4
+!manim-projects/lorenz-attractor-2.0/media/videos/**/LorenzAttractor.mp4
 !manim-projects/huffman-encoding-process/media/videos/**/CombinedScenes.mp4

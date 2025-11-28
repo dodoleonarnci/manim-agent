@@ -20,7 +20,8 @@
       "Skill(math-research)",
       "Bash(ffmpeg:*)",
       "Bash(find:*)",
-      "Skill(manim-coding)"
+      "Skill(manim-coding)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

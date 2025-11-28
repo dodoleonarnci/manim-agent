@@ -197,38 +197,7 @@ Displays all available commands.
 Exits the project manager.
 
 ## 🎥 Visual Showcase
-
-### Featured Project 1: Regular Pentagon Construction
-
-A complete geometric construction demonstrating classical compass and straightedge techniques.
-
-**Watch the full animation:**
-[`manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4`](manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4)
-
-**What you'll see:**
-- 7 detailed scenes showing step-by-step construction
-- IntroScene → Perpendicular Diameters → Find Midpoint → Golden Arc → Mark Vertices → Complete Pentagon → Verification
-- Golden ratio (φ = (1+√5)/2) embedded in the geometry
-- Complete verification with angle (108°) and side measurements
-- ~2 minutes duration, 1080p60 quality
-
-**From natural language to beautiful animation:**
-```
-"Animate the construction of a regular pentagon using only compass and straightedge"
-↓
-Complete video with research, planning, implementation, and rendering
-```
-
-**Technical achievements:**
-- ✓ Mathematically accurate construction using φ = (1+√5)/2
-- ✓ Smooth compass arc animations with proper geometry
-- ✓ Clear step-by-step pedagogical flow
-- ✓ 100+ externalized visual parameters in params.py
-- ✓ Comprehensive research report with historical context
-
----
-
-### Featured Project 2: Huffman Encoding Process
+### Featured Project: Huffman Encoding Process
 
 A comprehensive visualization of the Huffman encoding algorithm demonstrating data compression.
 
@@ -259,61 +228,18 @@ Complete video showing tree structure, encoding steps, and 80.6% compression rat
 - ✓ 100+ customizable parameters extracted to params.py
 - ✓ Helper functions for tree building and path traversal
 
----
+### Lorenz Attractor 1.0 vs 2.0
 
-## 🎨 Example Projects
+A side-by-side comparison demonstrating the power of the new **agents & skills architecture**.
 
-### 1. Regular Pentagon Construction ⭐
-**Request:**
-```
-Animate the construction of a regular pentagon using only compass and straightedge
-```
+| Version | Method | Develop Time | Demo Video |
+|---------|--------|----------|------------|
+| **1.0** | Detailed manual prompt to Claude Code | ~2mins | [`manim-projects/lorenz-attractor-1.0/media/videos/LorenzAttractorTracing.mp4`](manim-projects/lorenz-attractor-1.0/media/videos/LorenzAttractorTracing.mp4) |
+| **2.0** | `/animate` command with automated agents & skills | ~5mins | [`manim-projects/lorenz-attractor-2.0/media/videos/animation/1080p60/LorenzAttractor.mp4`](manim-projects/lorenz-attractor-2.0/media/videos/animation/1080p60/LorenzAttractor.mp4) |
 
-**Output:**
-- 7 scenes showing complete construction (~2 minutes)
-- IntroScene → Perpendicular Diameters → Find Midpoint → Golden Arc → Mark Vertices → Complete Pentagon → Verification
-- Step-by-step compass and straightedge operations
-- Golden ratio calculation and visualization
-- Verification of angles (108°) and equal side lengths
-- Research report with historical context
-- 100+ visual parameters (externalized to params.py)
-- **[Watch CombinedScenes.mp4](manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4)**
-
-**Location:** `manim-projects/pentagon-construction/`
-
-### 2. Huffman Encoding Process ⭐
-**Request:**
-```
-Animate the Huffman encoding process for the message AABBBCCCC
-```
-
-**Output:**
-- 5 scenes (~3 minutes total)
-- PreBuiltTreeScene → EncodeSingleChar → EncodeFullMessage → BitComparison → CompressionStats
-- Visual Huffman tree with interactive traversal
-- Character-by-character encoding demonstration
-- Binary bit comparison (72 bits → 14 bits)
-- Compression statistics with animated gauge
-- Research report with algorithm details
-- 100+ customizable parameters
-- **[Watch CombinedScenes.mp4](manim-projects/huffman-encoding-process/media/videos/animation/1080p60/CombinedScenes.mp4)**
-
-**Compression achieved:** 80.6% compression ratio!
-
-**Location:** `manim-projects/huffman-encoding-process/`
-
-### 3. Golden Ratio Spiral
-**Request:**
-```
-Create an animation exploring the golden ratio and its connection to Fibonacci
-```
-
-**Output:**
-- 5 scenes (3 planned, ready to extend)
-- Introduction with line segment division
-- Mathematical properties (φ² = φ + 1)
-- Fibonacci sequence convergence
-- Externalized parameters for easy customization
+**Key Difference:**
+- **v1.0:** Manual step-by-step instructions → single-shot code generation
+- **v2.0:** `/animate` → automated research (math-research skill) → structured planning → implementation (manim-coding skill)
 
 ## 🛠️ Plugin Components
 
@@ -622,7 +548,6 @@ This project is provided as-is for educational and creative purposes.
 
 ```bash
 # 1. View the featured examples
-open manim-projects/pentagon-construction/media/videos/animation/1080p60/CombinedScenes.mp4
 open manim-projects/huffman-encoding-process/media/videos/animation/1080p60/CombinedScenes.mp4
 
 # 2. Create your first animation
@@ -639,7 +564,7 @@ python main.py
 
 **Make mathematics beautiful.** Create stunning animations that teach, inspire, and illuminate.
 
-**Featured examples:** The [Pentagon Construction](#featured-project-1-regular-pentagon-construction) and [Huffman Encoding](#featured-project-2-huffman-encoding-process) showcase what this system can create - from natural language requests to publication-ready mathematical animations.
+**Featured examples:** [Huffman Encoding](#featured-project-2-huffman-encoding-process) showcase what this system can create - from natural language requests to publication-ready mathematical animations.
 
 ---
 
