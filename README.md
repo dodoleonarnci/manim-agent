@@ -4,13 +4,13 @@ A comprehensive system for creating beautiful mathematical animations using Clau
 
 
 Claude Code prompt only:
-https://github.com/user-attachments/assets/ca62efc3-d3df-462b-881b-4163b17fb19c
+https://github.com/user-attachments/assets/d01f324a-05c5-453f-9050-f1935082f93a
 
 Agent workflow:
 https://github.com/user-attachments/assets/a69dec0c-7893-4929-8744-8a476b05f07e
 
 Longer video demo (done in one shot):
-https://github.com/user-attachments/assets/f72ebea0-5fdc-4b60-806a-677d8c573f9b
+https://github.com/user-attachments/assets/ef063faf-cc34-4234-bc51-9a1a6c55150c
 
 
 
