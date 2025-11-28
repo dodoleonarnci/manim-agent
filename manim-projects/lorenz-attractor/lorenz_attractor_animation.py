@@ -18,6 +18,9 @@ class LorenzAttractor(ThreeDScene):
     """3D visualization of the Lorenz attractor with rotating camera"""
 
     def construct(self):
+        self.lorenz_attractor_animation()
+
+    def lorenz_attractor_animation(self):
         # Set up 3D axes
         axes = ThreeDAxes(
             x_range=[-30, 30, 10],
@@ -179,6 +182,9 @@ class LorenzAttractorTracing(ThreeDScene):
     """Alternative version showing the trajectory being traced in real-time"""
 
     def construct(self):
+        self.lorenz_attractor_tracing_animation()
+
+    def lorenz_attractor_tracing_animation(self):
         # Set up 3D axes
         axes = ThreeDAxes(
             x_range=[-30, 30, 10],
@@ -279,3 +285,18 @@ class LorenzAttractorTracing(ThreeDScene):
         self.wait(3)
         self.stop_ambient_camera_rotation()
         self.wait(1)
+
+
+class CombinedScenes(ThreeDScene):
+    """Combines all scenes in the correct order for a single video."""
+
+    def construct(self):
+        # Scene 1: Main Lorenz Attractor
+        LorenzAttractor.lorenz_attractor_animation(self)
+
+        # Clear the scene
+        self.clear()
+        self.renderer.camera.reset()
+
+        # Scene 2: Live Tracing
+        LorenzAttractorTracing.lorenz_attractor_tracing_animation(self)

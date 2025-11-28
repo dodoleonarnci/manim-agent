@@ -19,7 +19,8 @@
       "Bash(curl:*)",
       "Skill(math-research)",
       "Bash(ffmpeg:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Skill(manim-coding)"
     ],
     "deny": [],
     "ask": []

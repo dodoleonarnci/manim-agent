@@ -67,6 +67,9 @@ class IntroScene(Scene):
     """
 
     def construct(self):
+        self.intro_animation()
+
+    def intro_animation(self):
         # Create title and subtitle
         title = Text(
             TEXT["intro_title"],
@@ -134,6 +137,9 @@ class PerpendicularDiameters(Scene):
     """
 
     def construct(self):
+        self.perpendicular_diameters_animation()
+
+    def perpendicular_diameters_animation(self):
         # Recreate circle and center from previous scene
         circle = Circle(
             radius=DIMENSIONS["circle_radius"],
@@ -236,6 +242,9 @@ class FindMidpoint(Scene):
     """
 
     def construct(self):
+        self.find_midpoint_animation()
+
+    def find_midpoint_animation(self):
         # Recreate elements from previous scenes
         r = DIMENSIONS["circle_radius"]
         center = POSITIONS["circle_center"]
@@ -353,6 +362,9 @@ class GoldenArc(Scene):
     """
 
     def construct(self):
+        self.golden_arc_animation()
+
+    def golden_arc_animation(self):
         # Recreate elements from previous scenes
         r = DIMENSIONS["circle_radius"]
         center = POSITIONS["circle_center"]
@@ -477,6 +489,9 @@ class MarkVertices(Scene):
     """
 
     def construct(self):
+        self.mark_vertices_animation()
+
+    def mark_vertices_animation(self):
         # Recreate elements from previous scenes
         r = DIMENSIONS["circle_radius"]
         center = POSITIONS["circle_center"]
@@ -639,6 +654,9 @@ class CompletePentagon(Scene):
     """
 
     def construct(self):
+        self.complete_pentagon_animation()
+
+    def complete_pentagon_animation(self):
         # Recreate elements from previous scenes
         r = DIMENSIONS["circle_radius"]
         center = POSITIONS["circle_center"]
@@ -732,6 +750,9 @@ class Verification(Scene):
     """
 
     def construct(self):
+        self.verification_animation()
+
+    def verification_animation(self):
         # Recreate elements from previous scenes
         r = DIMENSIONS["circle_radius"]
         center = POSITIONS["circle_center"]
@@ -895,31 +916,24 @@ class Verification(Scene):
 # MAIN SCENE - Combines all scenes in sequence
 # =============================================================================
 
-class PentagonConstruction(Scene):
+class CombinedScenes(Scene):
     """
-    Main scene that combines all construction steps into one continuous animation.
+    Combines all construction steps into one continuous animation.
     This can be rendered as a single video showing the complete construction process.
     """
 
     def construct(self):
         # Run all scenes in sequence
-        intro = IntroScene()
-        intro.construct()
+        IntroScene.intro_animation(self)
 
-        perpendicular = PerpendicularDiameters()
-        perpendicular.construct()
+        PerpendicularDiameters.perpendicular_diameters_animation(self)
 
-        midpoint = FindMidpoint()
-        midpoint.construct()
+        FindMidpoint.find_midpoint_animation(self)
 
-        golden = GoldenArc()
-        golden.construct()
+        GoldenArc.golden_arc_animation(self)
 
-        vertices = MarkVertices()
-        vertices.construct()
+        MarkVertices.mark_vertices_animation(self)
 
-        complete = CompletePentagon()
-        complete.construct()
+        CompletePentagon.complete_pentagon_animation(self)
 
-        verify = Verification()
-        verify.construct()
+        Verification.verification_animation(self)

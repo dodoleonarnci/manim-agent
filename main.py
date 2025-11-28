@@ -93,7 +93,7 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
   1. Use Claude Code to create animation projects in manim-projects/
   2. Load a project with {Colors.GREEN}/load{Colors.ENDC}
   3. Use {Colors.GREEN}/render{Colors.ENDC} or {Colors.GREEN}/preview{Colors.ENDC} to render scenes
-     → Option -1: Combined video (all scenes in one file)
+     → Option -1: Combined video (renders CombinedScenes class)
      → Option 0: All scenes (separate files)
      → Option 1+: Individual scenes
   4. Ask Claude to refine animations based on rendered output
@@ -101,7 +101,7 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
 {Colors.BOLD}Tips:{Colors.ENDC}
   " Projects are in manim-projects/ (one directory per project)
   " Each project has animation.py, params.py, README.md
-  " Combined videos are created using ffmpeg (requires ffmpeg installed)
+  " Combined videos use the CombinedScenes class (all scenes in order)
   " Use Claude Code for all animation creation and refinement
   " This interface is for project selection and rendering only
 """
@@ -345,16 +345,18 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
         print()
 
     def get_scenes_from_file(self, py_file: Path) -> List[str]:
-        """Extract scene class names from a Python file"""
+        """Extract scene class names from a Python file (excluding CombinedScenes)"""
         scenes = []
         try:
             with open(py_file, 'r') as f:
                 for line in f:
-                    # Look for class definitions that inherit from Scene
-                    if 'class ' in line and '(Scene)' in line:
+                    # Look for class definitions that inherit from Scene or ThreeDScene
+                    if 'class ' in line and ('(Scene)' in line or '(ThreeDScene)' in line):
                         # Extract class name
                         class_name = line.split('class ')[1].split('(')[0].strip()
-                        scenes.append(class_name)
+                        # Exclude CombinedScenes (reserved for option -1)
+                        if class_name != 'CombinedScenes':
+                            scenes.append(class_name)
         except Exception as e:
             print(f"{Colors.RED}Error reading file: {e}{Colors.ENDC}")
 
@@ -459,9 +461,9 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
 
         # --------------------------- CASE -1: Combined video -----------------------------
         if idx == -1:
-            # IMPORTANT: no -p (so no scenes pop up)
-            cmd = f"manim -q{quality} {filename}"
-            print(f"\n{Colors.GREEN}→ Rendering combined video (no auto-play){Colors.ENDC}")
+            # Render the CombinedScenes class which contains all scenes in order
+            cmd = f"manim -q{quality} {filename} CombinedScenes"
+            print(f"\n{Colors.GREEN}→ Rendering combined scenes (no auto-play){Colors.ENDC}")
             print(f"{Colors.CYAN}Running: {cmd}{Colors.ENDC}")
             os.system(cmd)
 
@@ -470,13 +472,16 @@ ZPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP]
                 print(f"{Colors.RED}No output directory found.{Colors.ENDC}")
                 return
 
-            videos = list(media_dir.glob("*.mp4"))
-            if not videos:
-                print(f"{Colors.RED}No output video found.{Colors.ENDC}")
-                return
-
-            print(f"\n{Colors.GREEN}✓ Combined video complete!{Colors.ENDC}")
-            print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {videos[-1]}")
+            # Look for the CombinedScenes.mp4 file
+            combined_video = media_dir / "CombinedScenes.mp4"
+            if combined_video.exists():
+                file_size = combined_video.stat().st_size / (1024 * 1024)  # MB
+                print(f"\n{Colors.GREEN}✓ Combined scenes video complete!{Colors.ENDC}")
+                print(f"{Colors.CYAN}→ Saved as:{Colors.ENDC}  {combined_video}")
+                print(f"{Colors.CYAN}  Size: {file_size:.1f} MB{Colors.ENDC}")
+            else:
+                print(f"\n{Colors.YELLOW}Rendering complete, but CombinedScenes.mp4 not found.{Colors.ENDC}")
+                print(f"{Colors.YELLOW}Make sure the animation file has a CombinedScenes class.{Colors.ENDC}")
             return
 
         # --------------------------- CASE 0: Separate videos -----------------------------

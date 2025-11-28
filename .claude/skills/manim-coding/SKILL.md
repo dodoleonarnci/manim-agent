@@ -32,6 +32,51 @@ class MyScene(Scene):
 - Create a class that inherits from `Scene`
 - All animation logic goes in the `construct()` method
 
+### Multi-Scene Projects with Combined Scene
+
+**IMPORTANT**: When creating projects with multiple scenes, use helper methods to enable scene combination:
+
+```python
+from manim import *
+
+class Scene1(Scene):
+    def construct(self):
+        self.scene1_animation()
+
+    def scene1_animation(self):
+        """First scene animation - can be called from any scene"""
+        text = Text("Scene 1")
+        self.play(Write(text))
+        self.wait()
+
+class Scene2(Scene):
+    def construct(self):
+        self.scene2_animation()
+
+    def scene2_animation(self):
+        """Second scene animation - can be called from any scene"""
+        text = Text("Scene 2")
+        self.play(Write(text))
+        self.wait()
+
+class CombinedScenes(Scene):
+    def construct(self):
+        """Combines all scenes in the correct order for a single video."""
+        # Play Scene 1
+        Scene1.scene1_animation(self)
+        self.clear()
+
+        # Play Scene 2
+        Scene2.scene2_animation(self)
+```
+
+**Note**:
+- Each scene's logic goes in a separate method (e.g., `scene1_animation`)
+- Individual scenes call their own method from `construct()`
+- `CombinedScenes` calls all scene methods with `self` as the context
+- Use `self.clear()` between scenes to clear the screen
+- The helper method must use `self` for all Manim operations (`self.play()`, `self.add()`, etc.)
+
 ### Core Scene Methods
 
 ```python

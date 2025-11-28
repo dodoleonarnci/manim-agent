@@ -35,6 +35,9 @@ class IntroScene(Scene):
     """
 
     def construct(self):
+        self.intro_animation()
+
+    def intro_animation(self):
         # Title
         title = Text(TEXT["intro_title"], font_size=SIZES["title_font"], color=COLORS["gold"], weight=BOLD)
         title.to_edge(UP)
@@ -151,6 +154,9 @@ class PropertiesScene(Scene):
     """
 
     def construct(self):
+        self.properties_animation()
+
+    def properties_animation(self):
         # Title
         title = Text(TEXT["properties_title"], font_size=SIZES["subtitle_font"], color=COLORS["gold"], weight=BOLD)
         title.to_edge(UP)
@@ -324,6 +330,9 @@ class FibonacciConnection(Scene):
     """
 
     def construct(self):
+        self.fibonacci_animation()
+
+    def fibonacci_animation(self):
         # Title
         title = Text(TEXT["fibonacci_title"], font_size=SIZES["subtitle_font"], color=COLORS["gold"], weight=BOLD)
         title.to_edge(UP)
@@ -478,6 +487,9 @@ class GoldenRectangles(Scene):
     """
 
     def construct(self):
+        self.golden_rectangles_animation()
+
+    def golden_rectangles_animation(self):
         # Title
         title = Text(TEXT["rectangles_title"], font_size=SIZES["subtitle_font"], color=COLORS["gold"], weight=BOLD)
         title.to_edge(UP)
@@ -502,6 +514,9 @@ class SpiralBuilding(Scene):
     """
 
     def construct(self):
+        self.spiral_building_animation()
+
+    def spiral_building_animation(self):
         # Title
         title = Text(TEXT["spiral_title"], font_size=SIZES["subtitle_font"], color=COLORS["gold"], weight=BOLD)
         title.to_edge(UP)
@@ -515,3 +530,27 @@ class SpiralBuilding(Scene):
         self.play(Write(placeholder))
         self.wait(2)
         self.play(FadeOut(placeholder), FadeOut(title))
+
+
+class CombinedScenes(Scene):
+    """Combines all scenes in the correct order for a single video."""
+
+    def construct(self):
+        # Scene 1: Introduction
+        IntroScene.intro_animation(self)
+        self.clear()
+
+        # Scene 2: Properties
+        PropertiesScene.properties_animation(self)
+        self.clear()
+
+        # Scene 3: Fibonacci Connection
+        FibonacciConnection.fibonacci_animation(self)
+        self.clear()
+
+        # Scene 4: Golden Rectangles
+        GoldenRectangles.golden_rectangles_animation(self)
+        self.clear()
+
+        # Scene 5: Spiral Building
+        SpiralBuilding.spiral_building_animation(self)
